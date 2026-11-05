@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#101318">
+    <title>InputSmith — Make your DualSense feel exactly right on PC</title>
+    <meta name="description" content="InputSmith turns your PlayStation DualSense into a perfectly-tuned PC controller. Present it to games as an Xbox pad, shape sensitivity, response curves and deadzones, and save a profile for every game.">
+    <meta property="og:title" content="InputSmith — Make your DualSense feel exactly right on PC">
+    <meta property="og:description" content="Turn your DualSense into a perfectly-tuned PC controller. Xbox compatibility, live stick tuning, profiles, and mouse & keyboard mode. Windows 10/11.">
+    <meta property="og:type" content="website">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #101318;
+        --panel: #171b22;
+        --panel-raised: #1c212a;
+        --line: #292f3a;
+        --muted: #858d9d;
+        --soft: #b4bbc8;
+        --text: #f0f2f6;
+        --accent: #c8f169;
+        --accent-soft: rgba(200, 241, 105, .13);
+        --orange: #ff9a68;
+        --mono: "DM Mono", Consolas, monospace;
+        --sans: "DM Sans", "Segoe UI", sans-serif;
+        --display: Manrope, "Segoe UI", sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background:
+          radial-gradient(1100px 620px at 50% -220px, rgba(200,241,105,.1), transparent 60%),
+          var(--bg);
+        color: var(--text);
+        font-family: var(--sans);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+      a { color: inherit; text-decoration: none; }
+      .wrap { width: min(1080px, 100%); margin: 0 auto; padding: 0 24px; }
+
+      /* Nav */
+      .nav { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(10px); background: rgba(16,19,24,.72); border-bottom: 1px solid var(--line); }
+      .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+      .brand { display: flex; align-items: center; gap: 11px; font: 800 18px var(--display); letter-spacing: .2px; }
+      .brand-mark { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: var(--accent); }
+      .brand-anvil { width: 22px; height: 22px; fill: #171b13; }
+      .nav-links { display: flex; align-items: center; gap: 26px; }
+      .nav-links a { color: var(--soft); font-size: 14px; }
+      .nav-links a:hover { color: var(--text); }
+      .nav-cta { padding: 9px 16px; border-radius: 8px; background: var(--accent); color: #171b13; font: 600 13px var(--display); }
+      .nav-cta:hover { background: #d4f783; }
+      @media (max-width: 680px) { .nav-links .nav-link { display: none; } }
+
+      /* Hero */
+      .hero { padding: 86px 0 54px; text-align: center; }
+      .eyebrow { display: inline-block; padding: 5px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--accent-soft); color: var(--accent); font: 500 12px var(--mono); letter-spacing: .4px; text-transform: uppercase; }
+      .hero h1 { margin: 22px auto 0; max-width: 16ch; font: 800 clamp(34px, 6vw, 58px) var(--display); line-height: 1.08; letter-spacing: -.5px; }
+      .hero h1 .hl { color: var(--accent); }
+      .hero p { margin: 20px auto 0; max-width: 60ch; color: var(--soft); font-size: clamp(15px, 2vw, 18px); }
+      .cta-row { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin-top: 34px; }
+      .btn { display: inline-flex; align-items: center; gap: 9px; padding: 14px 26px; border-radius: 10px; font: 600 15px var(--display); cursor: pointer; transition: .15s ease; border: 1px solid transparent; }
+      .btn-primary { background: var(--accent); color: #171b13; }
+      .btn-primary:hover { background: #d4f783; transform: translateY(-1px); }
+      .btn-ghost { background: transparent; color: var(--text); border-color: var(--line); }
+      .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+      .hero-note { margin-top: 18px; color: var(--muted); font-size: 13px; }
+
+      /* Preview frame */
+      .preview { margin: 56px auto 0; max-width: 940px; border: 1px solid var(--line); border-radius: 16px; background: linear-gradient(160deg, var(--panel-raised), var(--panel)); box-shadow: 0 40px 90px rgba(0,0,0,.5); overflow: hidden; }
+      .preview-bar { display: flex; align-items: center; gap: 7px; padding: 13px 16px; border-bottom: 1px solid var(--line); }
+      .preview-bar i { width: 11px; height: 11px; border-radius: 50%; background: #2d333f; display: inline-block; }
+      .preview-bar span { margin-left: 10px; color: var(--muted); font: 500 12px var(--mono); }
+      .preview-body { display: grid; grid-template-columns: 1.3fr 1fr; gap: 1px; background: var(--line); }
+      .pv-pane { background: var(--panel); padding: 26px; }
+      .pv-label { color: var(--muted); font: 500 11px var(--mono); letter-spacing: .8px; text-transform: uppercase; }
+      .pv-title { margin: 7px 0 18px; font: 700 18px var(--display); }
+      .curve { width: 100%; height: 190px; }
+      .sliders { margin-top: 2px; }
+      .slider { margin-bottom: 18px; }
+      .slider .s-top { display: flex; justify-content: space-between; font-size: 13px; }
+      .slider .s-top b { font-weight: 600; }
+      .slider .s-top em { color: var(--accent); font-style: normal; font-family: var(--mono); font-size: 12px; }
+      .track { margin-top: 8px; height: 6px; border-radius: 4px; background: #242a34; position: relative; }
+      .track i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 4px; background: var(--accent); }
+      .track i::after { content: ""; position: absolute; right: -7px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 4px rgba(200,241,105,.18); }
+      @media (max-width: 760px) { .preview-body { grid-template-columns: 1fr; } .pv-pane:first-child { display: none; } }
+
+      /* Sections */
+      section { padding: 72px 0; }
+      .section-head { text-align: center; max-width: 60ch; margin: 0 auto 46px; }
+      .section-head h2 { margin: 0; font: 800 clamp(26px, 4vw, 38px) var(--display); letter-spacing: -.3px; }
+      .section-head p { margin: 14px auto 0; color: var(--soft); font-size: 16px; }
+
+      .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+      .card { padding: 26px; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); transition: .18s ease; }
+      .card:hover { border-color: rgba(200,241,105,.4); transform: translateY(-3px); }
+      .card .ico { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 11px; background: var(--accent-soft); margin-bottom: 16px; }
+      .card .ico svg { width: 22px; height: 22px; stroke: var(--accent); fill: none; stroke-width: 1.8; }
+      .card h3 { margin: 0 0 8px; font: 700 17px var(--display); }
+      .card p { margin: 0; color: var(--soft); font-size: 14.5px; }
+      .card p em { color: var(--text); font-style: italic; }
+
+      /* Pricing */
+      .pricing { display: flex; justify-content: center; }
+      .price-card { width: min(460px, 100%); text-align: center; padding: 42px 34px; border: 1px solid rgba(200,241,105,.35); border-radius: 18px; background: linear-gradient(165deg, rgba(200,241,105,.06), var(--panel)); box-shadow: 0 30px 70px rgba(0,0,0,.4); }
+      .price-card .amt { font: 800 56px var(--display); line-height: 1; }
+      .price-card .amt span { font-size: 22px; color: var(--muted); font-weight: 600; }
+      .price-card .lifetime { margin: 10px 0 24px; color: var(--accent); font: 500 14px var(--mono); }
+      .price-list { list-style: none; margin: 0 0 28px; padding: 0; text-align: left; display: inline-block; }
+      .price-list li { display: flex; align-items: center; gap: 10px; margin: 11px 0; color: var(--soft); font-size: 14.5px; }
+      .price-list li svg { flex: 0 0 auto; width: 18px; height: 18px; stroke: var(--accent); fill: none; stroke-width: 2.2; }
+      .price-card .btn-primary { width: 100%; justify-content: center; }
+      .price-fine { margin-top: 16px; color: var(--muted); font-size: 12.5px; }
+
+      /* Note strip */
+      .note { max-width: 760px; margin: 0 auto; padding: 24px 26px; border: 1px solid var(--line); border-left: 3px solid var(--orange); border-radius: 12px; background: var(--panel); color: var(--soft); font-size: 14px; }
+      .note strong { color: var(--text); }
+
+      /* Requirements */
+      .reqs { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+      .req { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); color: var(--soft); font-size: 14px; }
+      .req svg { width: 18px; height: 18px; stroke: var(--accent); fill: none; stroke-width: 1.8; }
+
+      /* Footer */
+      footer { border-top: 1px solid var(--line); padding: 34px 0; margin-top: 40px; }
+      .foot-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; color: var(--muted); font-size: 13px; }
+      .foot-brand { display: flex; align-items: center; gap: 9px; font: 700 15px var(--display); color: var(--text); }
+      .foot-brand .brand-mark { width: 26px; height: 26px; border-radius: 7px; }
+      .foot-brand .brand-anvil { width: 17px; height: 17px; }
+    </style>
+  </head>
+  <body>
+    <!-- ===== Nav ===== -->
+    <nav class="nav">
+      <div class="wrap nav-inner">
+        <a class="brand" href="#top">
+          <span class="brand-mark" aria-hidden="true">
+            <svg class="brand-anvil" viewBox="0 0 24 24" role="img" aria-label="InputSmith">
+              <path d="M1.8 9.2 L9 7.1 L20.4 7.1 L19.1 10 L14.6 10 L14.6 12.4 L19.4 13.4 C18.7 15 17.3 16.1 15.6 16.5 L14.3 18.2 L16.8 18.2 L16.8 20.4 L7.2 20.4 L7.2 18.2 L9.4 18.2 L10.2 16.4 C8 15.7 6.4 14 5.6 11.9 L9.4 11.9 L9.4 10 L5.9 10 Z"/>
+            </svg>
+          </span>
+          InputSmith
+        </a>
+        <div class="nav-links">
+          <a class="nav-link" href="#features">Features</a>
+          <a class="nav-link" href="#pricing">Pricing</a>
+          <!-- BUY_URL: replace # with your Lemon Squeezy checkout URL -->
+          <a class="nav-cta" href="#pricing">Get it — $5</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ===== Hero ===== -->
+    <header class="hero" id="top">
+      <div class="wrap">
+        <span class="eyebrow">Windows 10 / 11 · Built for DualSense</span>
+        <h1>Make your DualSense feel <span class="hl">exactly right</span> on PC.</h1>
+        <p>InputSmith presents your PlayStation DualSense to games as a standard Xbox controller, then lets you shape sensitivity, response curves, and deadzones until aim and movement feel just right. Save a profile for every game.</p>
+        <div class="cta-row">
+          <!-- BUY_URL: replace # with your Lemon Squeezy checkout URL -->
+          <a class="btn btn-primary" href="#pricing">Get InputSmith — $5
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <!-- TRIAL_URL: replace # with your free-download (itch.io) link -->
+          <a class="btn btn-ghost" href="#">Try free for 7 days</a>
+        </div>
+        <p class="hero-note">7-day free trial · one-time purchase · free updates</p>
+
+        <!-- Product preview mock -->
+        <div class="preview" aria-hidden="true">
+          <div class="preview-bar">
+            <i></i><i></i><i></i>
+            <span>InputSmith — Controller Feel Studio</span>
+          </div>
+          <div class="preview-body">
+            <div class="pv-pane">
+              <div class="pv-label">Response curve</div>
+              <div class="pv-title">Dial in your sticks</div>
+              <svg class="curve" viewBox="0 0 320 190" preserveAspectRatio="none">
+                <g stroke="#242a34" stroke-width="1">
+                  <line x1="0" y1="47" x2="320" y2="47"/>
+                  <line x1="0" y1="95" x2="320" y2="95"/>
+                  <line x1="0" y1="143" x2="320" y2="143"/>
+                  <line x1="80" y1="0" x2="80" y2="190"/>
+                  <line x1="160" y1="0" x2="160" y2="190"/>
+                  <line x1="240" y1="0" x2="240" y2="190"/>
+                </g>
+                <path d="M4 186 C90 170 150 120 180 95 C214 66 280 24 316 6" fill="none" stroke="#c8f169" stroke-width="3"/>
+                <circle cx="4" cy="186" r="5" fill="#c8f169"/>
+                <circle cx="180" cy="95" r="5" fill="#c8f169"/>
+                <circle cx="316" cy="6" r="5" fill="#c8f169"/>
+              </svg>
+            </div>
+            <div class="pv-pane">
+              <div class="pv-label">Fine tuning</div>
+              <div class="pv-title">Stick settings</div>
+              <div class="sliders">
+                <div class="slider"><div class="s-top"><b>Inner deadzone</b><em>8%</em></div><div class="track"><i style="width:14%"></i></div></div>
+                <div class="slider"><div class="s-top"><b>Sensitivity</b><em>100%</em></div><div class="track"><i style="width:64%"></i></div></div>
+                <div class="slider"><div class="s-top"><b>Output minimum</b><em>0%</em></div><div class="track"><i style="width:4%"></i></div></div>
+                <div class="slider"><div class="s-top"><b>Outer limit</b><em>100%</em></div><div class="track"><i style="width:92%"></i></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===== Features ===== -->
+    <section id="features">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>Forge the perfect feel</h2>
+          <p>Plug in, dial in your sticks, and play. Everything you need to make your controller work flawlessly and feel like yours.</p>
+        </div>
+        <div class="features">
+          <div class="card">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M6 10h.01M10 8h.01M14 8h.01M18 10h.01M8 12v.01M3 14a4 4 0 0 1 4-4h10a4 4 0 0 1 0 8c-2 0-2.5-1.5-5-1.5S9 18 7 18a4 4 0 0 1-4-4Z"/></svg></div>
+            <h3>Instant Xbox compatibility</h3>
+            <p>InputSmith presents your DualSense to games as a standard Xbox controller, so titles that only like Xbox pads recognize it immediately — no setup headaches.</p>
+          </div>
+          <div class="card">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 18 C9 16 12 9 14 7 C16 5 19 4 20 4"/><circle cx="14" cy="7" r="1.6"/></svg></div>
+            <h3>Tune your stick feel</h3>
+            <p>Adjust sensitivity, response curves, and deadzones to get aim and movement that feel right to <em>you</em>, instead of the game's defaults.</p>
+          </div>
+          <div class="card">
+            <div class="ico"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="9" height="14" rx="4.5"/><path d="M15 9h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-8"/></svg></div>
+            <h3>Mouse &amp; keyboard mode</h3>
+            <p>Map your controller to mouse and keyboard for games with no controller support at all.</p>
+          </div>
+          <div class="card">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7"/><path d="M8 14h8"/></svg></div>
+            <h3>Save unlimited profiles</h3>
+            <p>Nail a feel you love, save it, switch between setups per game, or reset to defaults in one click.</p>
+          </div>
+          <div class="card">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
+            <h3>Clean signal</h3>
+            <p>Optionally hide your real controller so the game only sees the virtual one — no "two controllers fighting" glitches.</p>
+          </div>
+          <div class="card">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M13 3L4 14h7l-1 7 9-11h-7z"/></svg></div>
+            <h3>Fast &amp; lightweight</h3>
+            <p>Live, real-time preview as you tune — changes apply instantly from your controller. Simple, fast, and Windows-ready.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Pricing ===== -->
+    <section id="pricing">
+      <div class="wrap">
+        <div class="section-head">
+          <h2>One price. Yours for good.</h2>
+          <p>Try it free for 7 days. Buy once, keep it forever — including every future update.</p>
+        </div>
+        <div class="pricing">
+          <div class="price-card">
+            <div class="amt">$5<span> once</span></div>
+            <div class="lifetime">Lifetime license · free updates</div>
+            <ul class="price-list">
+              <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Full stick &amp; button tuning</li>
+              <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Virtual Xbox &amp; mouse/keyboard output</li>
+              <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Unlimited saved profiles</li>
+              <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Free updates, including Xbox &amp; PS4 support</li>
+              <li><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg> Activate on up to 3 devices</li>
+            </ul>
+            <!-- BUY_URL: replace # with your Lemon Squeezy checkout URL -->
+            <a class="btn btn-primary" href="#">Get InputSmith</a>
+            <p class="price-fine">Secure checkout by Lemon Squeezy. 7-day free trial, no card required.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Honest note ===== -->
+    <section style="padding-top:0;">
+      <div class="wrap">
+        <p class="note"><strong>Honest note.</strong> InputSmith remaps your real-time input, the same way popular tools like DS4Windows and Steam Input do. It does <strong>not</strong> include macros, rapid-fire, or auto-aim — it only reshapes the input you're physically making. As with any input tool, use your own discretion in competitive online games.</p>
+      </div>
+    </section>
+
+    <!-- ===== Requirements ===== -->
+    <section style="padding-top:0;">
+      <div class="wrap">
+        <div class="section-head" style="margin-bottom:28px;">
+          <h2>System requirements</h2>
+        </div>
+        <div class="reqs">
+          <div class="req"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="13" rx="1.5"/><path d="M8 20h8M12 17v3"/></svg> Windows 10 / 11 (64-bit)</div>
+          <div class="req"><svg viewBox="0 0 24 24"><path d="M6 11h.01M18 11h.01M4 13a4 4 0 0 1 4-4h8a4 4 0 0 1 0 8c-2 0-2.5-1.5-4-1.5S10 15 8 15a4 4 0 0 1-4-2Z"/></svg> PlayStation DualSense controller</div>
+          <div class="req"><svg viewBox="0 0 24 24"><path d="M7 8l-4 4 4 4M17 8l4 4-4 4"/></svg> USB connection recommended</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Footer ===== -->
+    <footer>
+      <div class="wrap foot-inner">
+        <div class="foot-brand">
+          <span class="brand-mark" aria-hidden="true">
+            <svg class="brand-anvil" viewBox="0 0 24 24" role="img" aria-label="InputSmith">
+              <path d="M1.8 9.2 L9 7.1 L20.4 7.1 L19.1 10 L14.6 10 L14.6 12.4 L19.4 13.4 C18.7 15 17.3 16.1 15.6 16.5 L14.3 18.2 L16.8 18.2 L16.8 20.4 L7.2 20.4 L7.2 18.2 L9.4 18.2 L10.2 16.4 C8 15.7 6.4 14 5.6 11.9 L9.4 11.9 L9.4 10 L5.9 10 Z"/>
+            </svg>
+          </span>
+          InputSmith
+        </div>
+        <div>© 2026 InputSmith · Made for PC players who love their DualSense.</div>
+      </div>
+    </footer>
+  </body>
+</html>
