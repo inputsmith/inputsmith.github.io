@@ -181,13 +181,13 @@
     <!-- ===== Hero ===== -->
     <header class="hero" id="top">
       <div class="wrap">
-        <a class="release-badge" href="#releases"><b>NEW</b> InputSmith 1.2.2 just released — see what's new →</a><br>
-        <span class="eyebrow">Windows 10 / 11 · Built for DualSense</span>
-        <h1>Make your DualSense feel <span class="hl">exactly right</span> on PC.</h1>
-        <p>InputSmith presents your PlayStation DualSense to games as a standard Xbox controller, then lets you shape sensitivity, response curves, and deadzones until aim and movement feel just right. Save a profile for every game.</p>
+        <a class="release-badge" href="#releases"><b>NEW</b> InputSmith 1.2.5 — Xbox background input updates →</a><br>
+        <span class="eyebrow">Windows 10 / 11 · DualSense and Xbox input</span>
+        <h1>Tune your DualSense or Xbox controller on PC.</h1>
+        <p>InputSmith works with PlayStation DualSense and Windows-recognized Xbox controllers. Shape sensitivity, response curves, and deadzones, then save a profile for every game.</p>
         <div class="cta-row">
           <span class="btn btn-primary" style="opacity:.6;cursor:default;" title="Paid version coming soon">Coming soon</span>
-          <a class="btn btn-ghost" href="https://github.com/inputsmith/inputsmith.github.io/releases/download/v1.2.2/InputSmith-Setup-1.2.2.exe">Try free for 7 days</a>
+          <a class="btn btn-ghost" href="https://github.com/inputsmith/inputsmith.github.io/releases/latest">Try free for 7 days</a>
         </div>
         <p class="hero-note">7-day free trial · one-time purchase · free updates</p>
 
@@ -242,7 +242,7 @@
           <div class="card">
             <div class="ico"><svg viewBox="0 0 24 24"><path d="M6 10h.01M10 8h.01M14 8h.01M18 10h.01M8 12v.01M3 14a4 4 0 0 1 4-4h10a4 4 0 0 1 0 8c-2 0-2.5-1.5-5-1.5S9 18 7 18a4 4 0 0 1-4-4Z"/></svg></div>
             <h3>Instant Xbox compatibility</h3>
-            <p>InputSmith presents your DualSense to games as a standard Xbox controller, so titles that only like Xbox pads recognize it immediately — no setup headaches.</p>
+            <p>Use a DualSense or an Xbox controller recognized by Windows. InputSmith can present customized DualSense input to games as a standard Xbox controller.</p>
           </div>
           <div class="card">
             <div class="ico"><svg viewBox="0 0 24 24"><path d="M4 18 C9 16 12 9 14 7 C16 5 19 4 20 4"/><circle cx="14" cy="7" r="1.6"/></svg></div>
@@ -252,7 +252,7 @@
           <div class="card">
             <div class="ico"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="9" height="14" rx="4.5"/><path d="M15 9h3a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-8"/></svg></div>
             <h3>Mouse &amp; keyboard mode</h3>
-            <p>Map your controller to mouse and keyboard for games with no controller support at all.</p>
+            <p>Map your controller to mouse and keyboard. Xbox buttons, left-stick WASD, and right-stick cursor movement keep working while InputSmith is in the background.</p>
           </div>
           <div class="card">
             <div class="ico"><svg viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5z"/><path d="M8 4v5h7"/><path d="M8 14h8"/></svg></div>
@@ -262,7 +262,7 @@
           <div class="card">
             <div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3.5 8-7 9-3.5-1-7-4-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div>
             <h3>Clean signal</h3>
-            <p>Optionally hide your real controller so the game only sees the virtual one — no "two controllers fighting" glitches.</p>
+            <p>Optionally use HidHide to hide supported physical controllers from games while InputSmith and its bridge can still read them.</p>
           </div>
           <div class="card">
             <div class="ico"><svg viewBox="0 0 24 24"><path d="M13 3L4 14h7l-1 7 9-11h-7z"/></svg></div>
@@ -307,7 +307,19 @@
         </div>
         <div class="releases">
           <details class="release" open>
-            <summary><h3>InputSmith 1.2.2</h3><span class="tag">LATEST</span><time datetime="2026-11-07">Nov 7, 2026</time></summary>
+            <summary><h3>InputSmith 1.2.5</h3><span class="tag">LATEST</span><time datetime="2026-11-07">Nov 7, 2026</time></summary>
+            <div class="release-body">
+              <p><strong>Xbox background input for Mouse + keyboard mode</strong></p>
+              <ul>
+                <li>Native XInput polling keeps Xbox mapped buttons, left-stick WASD, and right-stick cursor movement working while InputSmith is in the background.</li>
+                <li>Right-stick cursor movement continues to use the configured stick response and cursor settings.</li>
+                <li>HidHide setup now allows the InputSmith bridge to read supported hidden controllers while keeping them hidden from games.</li>
+              </ul>
+              <p><a href="https://github.com/inputsmith/inputsmith.github.io/releases/tag/v1.2.5">Download InputSmith 1.2.5</a></p>
+            </div>
+          </details>
+          <details class="release">
+            <summary><h3>InputSmith 1.2.2</h3><time datetime="2026-11-07">Nov 7, 2026</time></summary>
             <div class="release-body">
               <p><strong>New: number keys in Mouse + keyboard mappings</strong></p>
               <ul>
